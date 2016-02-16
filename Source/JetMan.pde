@@ -1,10 +1,12 @@
-class JetMan extends RectBody
+class JetMan extends SpriteBody
 {
-  
-  JetMan(Box2DProcessing box2D)
+
+  JetMan( float xInit, float yInit, Box2DProcessing box2D)
   {
-    super(100, 0, 10, 50, BodyType.DYNAMIC, box2D);
+    super(xInit, yInit, BodyType.DYNAMIC, box2D, loadImage("JetMan.png"));
   }
+  
+  
   
   
 }
