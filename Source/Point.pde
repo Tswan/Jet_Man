@@ -60,15 +60,11 @@ class Point
   void delete() 
   {
     delete = true;
-    //println("deleted");
-   //mBox2D.destroyBody(mBody);
-   //mBody.setTransform(new Vec2(random(width),random(height)),0);
-    
   }
   
   boolean done()
   {  
-   // println("done");
+   
    if(delete)
      mBox2D.destroyBody(mBody);
      

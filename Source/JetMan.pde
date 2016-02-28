@@ -30,7 +30,8 @@ class JetMan extends JetManBody
     if(direction == "up")
     {
       flying = true;
-      velocity.set(new Vec2(0,10));
+      velocity.set(new Vec2(0,1000));
+      
     }
     if(direction == "left")
     {
@@ -40,8 +41,7 @@ class JetMan extends JetManBody
     {
       velocity.set(new Vec2(10,0));
     }
-    println(velocity);
-    super.applyVelocity(velocity);
+    applyVelocity(velocity);
     velocity.mul(0);
   }
   
@@ -53,15 +53,14 @@ class JetMan extends JetManBody
     }
     if(direction == "left")
     {
-      velocity.set(new Vec2(-5,0));
+      velocity.set(new Vec2(-50,0));
     }
     if(direction == "right")
     {
-      velocity.set(new Vec2(5,0));
+      velocity.set(new Vec2(50,0));
     }
-    super.applyVelocity(velocity);
+    applyVelocity(velocity);
     velocity.mul(0);
-    
   }
   
   

@@ -55,9 +55,28 @@ class JetManBody
     
   }
   
+  void applyVelocity(float x,float y)
+  {
+    Vec2 bodyVec = mBody.getWorldCenter();
+    Vec2 worldTarg =  mBox2DRef.coordPixelsToWorld(x,y);
+    worldTarg.subLocal(bodyVec);
+    worldTarg.normalize();
+    worldTarg.mulLocal((float) 5000);
+    println("Body vector: "+bodyVec);
+    println("World target: "+worldTarg);
+    mBody.applyForce(worldTarg, bodyVec);
+    //mBody.setLinearVelocity(worldTarg);
+  }
+  
   void applyVelocity(Vec2 movement)
   {
-    mBody.setLinearVelocity(movement);
+    Vec2 bodyVec = mBody.getWorldCenter();
+    Vec2 target = bodyVec.add(movement);
+    target.subLocal(bodyVec);
+    target.normalize();
+    target.mulLocal((float) 5000);
+    
+    mBody.applyForce(target, bodyVec);
   }
   
   void destroyBody()

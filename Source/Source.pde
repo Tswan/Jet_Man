@@ -14,6 +14,10 @@ RectBody a;
 
 ArrayList<Point> points;
 
+//GUI stuff
+PFont f;
+int playerScore = 0;
+
 void setup()
 {
   size(600,400);
@@ -36,6 +40,10 @@ void setup()
   // Turn on collision listening!
   mBox2D.listenForCollisions();
   
+  //GUI Stuff
+  f = createFont("maven.otf", 24);
+  textFont(f);
+  
 }
 
 void draw()
@@ -47,6 +55,10 @@ void draw()
   
   
   mBox2D.step();
+  
+  if (mousePressed) {
+    jetman.applyVelocity(mouseX,mouseY);
+  }
   
   jetman.update();
   
@@ -65,6 +77,19 @@ void draw()
     }
   }
   
+  drawType();
+  
+}
+
+void drawType()
+{
+  fill(255);
+  String score = "score: " + playerScore;
+  pushMatrix();
+    translate(10,30);
+    text(score,0,0);
+  popMatrix();  
+  println(score);
 }
 
 
@@ -125,11 +150,13 @@ void beginContact(Contact cp) {
   {
     Point p1 = (Point) o1;
     p1.delete();
+    playerScore++;
   }
   if(o2.getClass() == Point.class) 
   {
     Point p2 = (Point) o2;
     p2.delete();
+    playerScore++;
   }
 
 }
