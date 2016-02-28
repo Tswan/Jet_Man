@@ -7,9 +7,12 @@ import org.jbox2d.dynamics.joints.*;
 
 Box2DProcessing mBox2D;
 RectBody ground;
-SpriteBody gem_sprite;
+Point gem_sprite;
 PImage gem_img; 
 JetMan jetman;
+RectBody a;
+
+ArrayList<Point> points;
 
 void setup()
 {
@@ -21,18 +24,116 @@ void setup()
   gem_img = loadImage("Gem.png");
   
   float boundaryWidth = 10f;
+  
   ground = new RectBody(width/2f,height-boundaryWidth/2f,width,boundaryWidth,BodyType.STATIC,mBox2D);
-  gem_sprite = new SpriteBody(300, 200, BodyType.STATIC, mBox2D, gem_img);
-  jetman = new JetMan(100, 20, mBox2D);
+  gem_sprite = new Point(mBox2D, gem_img);
+  jetman = new JetMan(100, 60, mBox2D);
+  a = new RectBody(210, 60,gem_img.width,gem_img.height,BodyType.DYNAMIC,mBox2D);
+  
+  points =  new ArrayList<Point>();
+  points.add(gem_sprite);
+  
+  // Turn on collision listening!
+  mBox2D.listenForCollisions();
+  
 }
 
 void draw()
 {
-  background(200);
+  background(0);
+  
+  //removeBodies();
+  
+  
+  
   mBox2D.step();
   
+  jetman.update();
+  
   ground.draw();
-  gem_sprite.draw();
+  a.draw();
   jetman.draw();
   
+  for(int i = points.size()-1; i>= 0; i--)
+  {
+    Point p = points.get(i);
+    p.draw();
+    if(p.done())
+    {
+      points.remove(i);
+      points.add(new Point(mBox2D, gem_img));
+    }
+  }
+  
+}
+
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) 
+    {
+      jetman.move("up");
+    }
+    
+    if (keyCode == LEFT) 
+    {
+      jetman.move("left");
+    }
+    
+    if (keyCode == RIGHT) 
+    {
+      jetman.move("right");
+    }
+    
+  }
+}
+
+void keyReleased() {
+  if (key == CODED) {
+    if (keyCode == UP) 
+    {
+      jetman.stopMove("up");
+    }
+    
+    if (keyCode == LEFT) 
+    {
+      jetman.stopMove("left");
+    }
+    
+    if (keyCode == RIGHT) 
+    {
+      jetman.stopMove("right");
+    }
+    
+  }
+}
+
+// Collision event functions!
+void beginContact(Contact cp) {
+  // Get both shapes
+  Fixture f1 = cp.getFixtureA();
+  Fixture f2 = cp.getFixtureB();
+  // Get both bodies
+  Body b1 = f1.getBody();
+  Body b2 = f2.getBody();
+
+  // Get our objects that reference these bodies
+  Object o1 = b1.getUserData();
+  Object o2 = b2.getUserData();
+  
+  if (o1.getClass() == Point.class)
+  {
+    Point p1 = (Point) o1;
+    p1.delete();
+  }
+  if(o2.getClass() == Point.class) 
+  {
+    Point p2 = (Point) o2;
+    p2.delete();
+  }
+
+}
+
+// Objects stop touching each other
+void endContact(Contact cp) {
 }

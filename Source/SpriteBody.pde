@@ -1,6 +1,6 @@
 class SpriteBody extends RectBody
 {
-  PImage sprite_img;
+  protected PImage sprite_img;
   
   SpriteBody( float xInit, float yInit, BodyType type, Box2DProcessing box2D, PImage img)
   {
