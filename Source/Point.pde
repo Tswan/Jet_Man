@@ -23,9 +23,18 @@ class Point
     mBody = mBox2D.createBody(bd);
     
     PolygonShape base = new PolygonShape();
-    float box2DW = mBox2D.scalarPixelsToWorld(mWidth/2f);
-    float box2DH = mBox2D.scalarPixelsToWorld(mHeight/2f);
-    base.setAsBox(box2DW, box2DH);
+    Vec2[] vertices = new Vec2[6];
+    vertices[0] = mBox2DRef.vectorPixelsToWorld(new Vec2(-20, 15));
+    vertices[1] = mBox2DRef.vectorPixelsToWorld(new Vec2(0, 30));
+    vertices[2] = mBox2DRef.vectorPixelsToWorld(new Vec2(21, 15));
+    vertices[3] = mBox2DRef.vectorPixelsToWorld(new Vec2(-20, -15));
+    vertices[4] = mBox2DRef.vectorPixelsToWorld(new Vec2(0, -31));
+    vertices[5] = mBox2DRef.vectorPixelsToWorld(new Vec2(21, -15));
+
+    base.set(vertices, vertices.length);
+    //float box2DW = mBox2D.scalarPixelsToWorld(mWidth/2f);
+    //float box2DH = mBox2D.scalarPixelsToWorld(mHeight/2f);
+    //base.setAsBox(box2DW, box2DH);
     
     
     FixtureDef fd = new FixtureDef();

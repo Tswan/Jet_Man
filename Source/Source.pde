@@ -6,7 +6,9 @@ import org.jbox2d.dynamics.contacts.*;
 import org.jbox2d.dynamics.joints.*;
 
 Box2DProcessing mBox2D;
-RectBody ground;
+Ground ground;
+Bridge bridge;
+RectBody testGround;
 Point gem_sprite;
 PImage gem_img; 
 JetMan jetman;
@@ -20,7 +22,7 @@ int playerScore = 0;
 
 void setup()
 {
-  size(600,400);
+  size(720,480);
   
   mBox2D = new Box2DProcessing(this);
   mBox2D.createWorld();
@@ -29,9 +31,11 @@ void setup()
   
   float boundaryWidth = 10f;
   
-  ground = new RectBody(width/2f,height-boundaryWidth/2f,width,boundaryWidth,BodyType.STATIC,mBox2D);
+  testGround = new RectBody(-width,height-boundaryWidth/2f,width*6,boundaryWidth,BodyType.STATIC,mBox2D);
   gem_sprite = new Point(mBox2D, gem_img);
   jetman = new JetMan(100, 60, mBox2D);
+  //ground = new Ground(mBox2D);
+  bridge = new Bridge(width,width/10);
   a = new RectBody(210, 60,gem_img.width,gem_img.height,BodyType.DYNAMIC,mBox2D);
   
   points =  new ArrayList<Point>();
@@ -48,11 +52,7 @@ void setup()
 
 void draw()
 {
-  background(0);
-  
-  //removeBodies();
-  
-  
+  background(0);  
   
   mBox2D.step();
   
@@ -62,7 +62,8 @@ void draw()
   
   jetman.update();
   
-  ground.draw();
+  //ground.draw();
+  testGround.draw();
   a.draw();
   jetman.draw();
   
@@ -76,6 +77,7 @@ void draw()
       points.add(new Point(mBox2D, gem_img));
     }
   }
+  bridge.draw();
   
   drawType();
   
@@ -89,12 +91,12 @@ void drawType()
     translate(10,30);
     text(score,0,0);
   popMatrix();  
-  println(score);
 }
 
 
 void keyPressed() {
-  if (key == CODED) {
+  if (key == CODED) 
+  {
     if (keyCode == UP) 
     {
       jetman.move("up");
@@ -114,7 +116,8 @@ void keyPressed() {
 }
 
 void keyReleased() {
-  if (key == CODED) {
+  if (key == CODED) 
+  {
     if (keyCode == UP) 
     {
       jetman.stopMove("up");
@@ -133,6 +136,11 @@ void keyReleased() {
   }
 }
 
+void mouseReleased()
+{
+  jetman.stopMove();
+}
+
 // Collision event functions!
 void beginContact(Contact cp) {
   // Get both shapes
@@ -146,14 +154,16 @@ void beginContact(Contact cp) {
   Object o1 = b1.getUserData();
   Object o2 = b2.getUserData();
   
-  if (o1.getClass() == Point.class)
+  if (o1.getClass() == Point.class && o2.getClass() == JetMan.class)
   {
+    println("touch point");
     Point p1 = (Point) o1;
     p1.delete();
     playerScore++;
   }
-  if(o2.getClass() == Point.class) 
+  if(o2.getClass() == Point.class && o1.getClass() == JetMan.class) 
   {
+    println("touch point");
     Point p2 = (Point) o2;
     p2.delete();
     playerScore++;
