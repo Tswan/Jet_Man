@@ -48,7 +48,7 @@ class Ground {
     bd.position.set(0.0f,0.0f);
     Body body = mBox2DRef.createBody(bd);
     body.createFixture(chain,1);
-
+    body.setUserData(this);
   }
 
   // A simple function to just draw the edge chain as a series of vertex points

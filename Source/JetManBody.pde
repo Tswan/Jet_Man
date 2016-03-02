@@ -90,10 +90,7 @@ class JetManBody
     worldTarg.subLocal(bodyVec);
     worldTarg.normalize();
     direction = round(worldTarg.x) == -1 ? -1 : 1;
-    //println(worldTarg);
     worldTarg.mulLocal((float) 70);
-    //println("Body vector: "+bodyVec);
-    //println("World target: "+worldTarg);
     mBody.applyForce(worldTarg, bodyVec);
     
   }

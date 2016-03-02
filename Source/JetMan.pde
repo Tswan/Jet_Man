@@ -62,5 +62,9 @@ class JetMan extends JetManBody
     velocity.mul(0);
   }
   
+  public Vec2 getPosition()
+  {
+    return mBox2DRef.getBodyPixelCoord(mBody);
+  }
   
 }

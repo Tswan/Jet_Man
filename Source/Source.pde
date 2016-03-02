@@ -5,16 +5,27 @@ import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
 import org.jbox2d.dynamics.joints.*;
 
+import netP5.*;
+import oscP5.*;
+
+//OSC Variable
+OscP5 mOSC;
+
+//Box2D Variables
 Box2DProcessing mBox2D;
 Ground ground;
 Bridge bridge;
-RectBody testGround;
-Point gem_sprite;
-PImage gem_img; 
+Point gem_sprite; 
 JetMan jetman;
-RectBody a;
-
+Missle a;
 ArrayList<Point> points;
+ArrayList<Missle> missles;
+
+//Images
+PImage gem_img;
+PImage missle_img;
+
+//
 
 //GUI stuff
 PFont f;
@@ -24,22 +35,30 @@ void setup()
 {
   size(720,480);
   
+  String yourIP = "10.70.32.69"; //You need to put your IP here
+  mOSC = new OscP5(this,yourIP, 8888); //has to be these numbers for multicast abilities
+  mOSC.plug(this, "missleTriggerOSCPlug", "/shoot/missle"); //a plug is a function that will be called when we receive a message from a particular address
+
+  
   mBox2D = new Box2DProcessing(this);
   mBox2D.createWorld();
   mBox2D.setGravity(0.0f,-9.8f);
   gem_img = loadImage("Gem.png");
+  missle_img = loadImage("Missle.png");
   
   float boundaryWidth = 10f;
   
-  testGround = new RectBody(-width,height-boundaryWidth/2f,width*6,boundaryWidth,BodyType.STATIC,mBox2D);
+  
   gem_sprite = new Point(mBox2D, gem_img);
   jetman = new JetMan(100, 60, mBox2D);
-  //ground = new Ground(mBox2D);
-  bridge = new Bridge(width,width/10);
-  a = new RectBody(210, 60,gem_img.width,gem_img.height,BodyType.DYNAMIC,mBox2D);
+  ground = new Ground(mBox2D);
+  bridge = new Bridge(width/2,width/30);
+  //a = new Missle();//(210, 60,gem_img.width,gem_img.height,BodyType.DYNAMIC,mBox2D);
   
   points =  new ArrayList<Point>();
   points.add(gem_sprite);
+  
+  missles = new ArrayList<Missle>();
   
   // Turn on collision listening!
   mBox2D.listenForCollisions();
@@ -62,10 +81,10 @@ void draw()
   
   jetman.update();
   
-  //ground.draw();
-  testGround.draw();
-  a.draw();
+  ground.draw();
+  bridge.draw();
   jetman.draw();
+  
   
   for(int i = points.size()-1; i>= 0; i--)
   {
@@ -77,7 +96,19 @@ void draw()
       points.add(new Point(mBox2D, gem_img));
     }
   }
-  bridge.draw();
+  
+  for(int i = missles.size()-1; i>= 0; i--)
+  {
+    Missle m = missles.get(i);
+    m.update();
+    m.draw();
+    if(m.done())
+    {
+      missles.remove(i);
+    }
+
+  }
+  
   
   drawType();
   
@@ -93,6 +124,11 @@ void drawType()
   popMatrix();  
 }
 
+void missleTriggerOSCPlug(int msg)
+{  
+  if(msg == 1)
+    missles.add(new Missle());
+}
 
 void keyPressed() {
   if (key == CODED) 
@@ -156,14 +192,12 @@ void beginContact(Contact cp) {
   
   if (o1.getClass() == Point.class && o2.getClass() == JetMan.class)
   {
-    println("touch point");
     Point p1 = (Point) o1;
     p1.delete();
     playerScore++;
   }
   if(o2.getClass() == Point.class && o1.getClass() == JetMan.class) 
   {
-    println("touch point");
     Point p2 = (Point) o2;
     p2.delete();
     playerScore++;

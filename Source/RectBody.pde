@@ -17,7 +17,7 @@ class RectBody
     BodyDef bd = new BodyDef();
     bd.type = type;
     bd.position = mBox2DRef.coordPixelsToWorld(xInit,yInit);
-    
+     bd.setFixedRotation(true);
     mBody = mBox2DRef.createBody(bd);
     
     PolygonShape rs = new PolygonShape();
