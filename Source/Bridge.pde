@@ -21,8 +21,8 @@ class Bridge {
       RectBody p = null;
       
       
-      if (i == 0 || i == numPoints) p = new RectBody(i*len+width/4,height/2,10,10,BodyType.STATIC,mBox2D);
-      else p = new RectBody(i*len+width/4,height/2,10,10,BodyType.DYNAMIC,mBox2D);
+      if (i == 0 || i == numPoints) p = new RectBody(i*len+width/4,height/2+100,10,10,BodyType.STATIC,mBox2D);
+      else p = new RectBody(i*len+width/4,height/2+100,10,10,BodyType.DYNAMIC,mBox2D);
       particles.add(p);
 
       

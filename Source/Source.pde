@@ -53,8 +53,7 @@ void setup()
   jetman = new JetMan(100, 60, mBox2D);
   ground = new Ground(mBox2D);
   bridge = new Bridge(width/2,width/30);
-  //a = new Missle();//(210, 60,gem_img.width,gem_img.height,BodyType.DYNAMIC,mBox2D);
-  
+ 
   points =  new ArrayList<Point>();
   points.add(gem_sprite);
   
@@ -108,7 +107,6 @@ void draw()
     }
 
   }
-  
   
   drawType();
   
@@ -201,6 +199,19 @@ void beginContact(Contact cp) {
     Point p2 = (Point) o2;
     p2.delete();
     playerScore++;
+  }
+  
+  if (o1.getClass() == Missle.class && o2.getClass() == JetMan.class)
+  {
+    Missle m1 = (Missle) o1;
+    m1.delete();
+    playerScore = 0;
+  }
+  if(o2.getClass() == Missle.class && o1.getClass() == JetMan.class) 
+  {
+    Missle m2 = (Missle) o2;
+    m2.delete();
+    playerScore = 0;
   }
 
 }

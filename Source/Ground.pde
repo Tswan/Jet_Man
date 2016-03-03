@@ -34,6 +34,7 @@ class Ground {
         y = height/2 + map(noise(xoff),0,1,-20,20);
       }
       
+      y = y+100;
       
       ground.add(new Vec2(x,y));
 

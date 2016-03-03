@@ -75,6 +75,10 @@ class Missle
     mBody.applyForce(target, bodyVec); 
   }
   
+  void delete() 
+  {
+    delete = true;
+  }
   
   boolean done()
   {  
