@@ -33,9 +33,9 @@ int playerScore = 0;
 
 void setup()
 {
-  size(720,480);
+  size(1080,720);
   
-  String yourIP = "10.70.32.69"; //You need to put your IP here
+  String yourIP = "172.17.104.132"; //You need to put your IP here
   mOSC = new OscP5(this,yourIP, 8888); //has to be these numbers for multicast abilities
   mOSC.plug(this, "missleTriggerOSCPlug", "/shoot/missle"); //a plug is a function that will be called when we receive a message from a particular address
 

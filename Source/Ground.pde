@@ -19,15 +19,21 @@ class Ground {
     // This "edgechain" will only work in one direction!
     for (float x = width+10; x > -10; x -= 5) {
 
-      // Doing some stuff with perlin noise to calculate a surface that points down on one side
-      // and up on the other
+      
       float y;
-      if (x > width/2) {
+      if (x > width/2 && x < (3*width/4)) 
+      {
         y = 100 + (width - x)*1.1 + map(noise(xoff),0,1,-80,80);
-      } 
-      else {
+      }
+      else if (x > width/4 && x <= width/2)
+      {
         y = 100 + x*1.1 + map(noise(xoff),0,1,-80,80);
       }
+      else 
+      {
+        y = height/2 + map(noise(xoff),0,1,-20,20);
+      }
+      
       
       ground.add(new Vec2(x,y));
 

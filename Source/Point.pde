@@ -18,7 +18,7 @@ class Point
     
     BodyDef bd = new BodyDef();
     bd.type = BodyType.STATIC;
-    bd.position = mBox2D.coordPixelsToWorld(random(width),random(height));
+    bd.position = mBox2D.coordPixelsToWorld(random(width),random(height/2));
     bd.setFixedRotation(true);
     mBody = mBox2D.createBody(bd);
     

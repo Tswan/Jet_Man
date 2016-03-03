@@ -6,7 +6,7 @@ OscP5 mOSC;
 void setup()
 {
   size(200, 200);
-  String yourIP = "10.70.32.69"; //You need to put your IP here
+  String yourIP = "172.17.104.132"; //You need to put your IP here
   mOSC = new OscP5(this,yourIP, 8888);
 }
 
